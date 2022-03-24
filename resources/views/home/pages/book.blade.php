@@ -16,6 +16,9 @@
   <div class="row">
       <div class="col-md-9">
           <div class="row">
+              <input type="hidden" value="{{$books->name}}" class="wishlist_title">
+              <input type="hidden" value="{{URL::current()}}" class="wishlist_url">
+              <input type="hidden" value="{{$books->id}}" class="wishlist_id">
                 <div class="col-md-3">
                     <img class="card-img-top" width="100px" src="{{$books->thumb}}" alt="">
                 </div>
@@ -25,7 +28,9 @@
                         <li class="mt-1">Tác Giả: {{$books->author}}</li>
                         <li class="mt-1">Thể Loại: <a style="text-decoration: none;" href="{{ route('danh-muc', ['slug'=>$books->categories->slug]) }}">{{$books->categories->name}}</a></li>
                         <li class="mt-1">Ngày Đăng: {{$books->created_at->diffForHumans()}}</li>
-                        <li class="mt-1">Cập Nhật Lúc: {{$books->updated_at->diffForHumans()}}</li>
+                        <li class="mt-1">Cập Nhật Lúc: @if ($update_chapter != null)
+                            {{$update_chapter->updated_at->diffForHumans()}}
+                        @endif</li>
                         <li class="mt-1">Số Chapter: 32</li>
                         <li class="mt-1">Số Lượt Xem: 42525</li>
                         <li class="mt-1"><a href="">Xem Muc Luc</a></li>
@@ -34,6 +39,7 @@
                                     <a href="{{ route('chapter', ['slug'=>$oneChapter->slug]) }}" class="btn btn-primary">Đọc Chương Đầu</a>
                                     <a href="{{ route('chapter', ['slug'=>$lastChapter->slug]) }}" class="btn btn-primary">Đọc Chương Mới Nhất</a>
                                 </li>
+                                <button type="button" class="btn btn-danger btn-thich-truyen mt-3"><i class="fa-solid fa-heart"></i> Truyện Yêu Thích</button>
 
                         @else
                             <div class="mt-2 card-title alert alert-danger">
@@ -99,7 +105,10 @@
           </div>
       </div>
       <div class="col-md-3">
-        <h3>Sách HOT</h3>
+        <h3 class="mt-3 fst-normal">Sách HOT</h3>
+
+        <h3 class="mt-3 fst-normal">Truyện Yêu Thích</h3>
+        <div id="fav-books"></div>
     </div>
   </div>
 

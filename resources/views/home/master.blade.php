@@ -42,6 +42,8 @@
           @include('home.footer')
     </div>
 
+
+    <!-- slider js -->
     <script src="{{ asset('template/js/main.js') }}"></script>
     <script src="{{ asset('template/bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('template/js/Jquery.js') }}" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -66,6 +68,7 @@
         })
     </script>
 
+    <!-- select chapter -->
     <script type="text/javascript">
         $('.select-chapter').on('change', function(){
             var url = $(this).val();
@@ -83,6 +86,7 @@
         }
     </script>
 
+    <!-- search by using ajax -->
     <script type="text/javascript">
         $('#keywords').keyup(function(){
             var keywords = $(this).val();
@@ -110,12 +114,14 @@
         });
     </script>
 
+    <!-- theme -->
     <script type="text/javascript">
         $(document).ready(function(){
 
             const data = localStorage.getItem('switch_color');
 
             if(data != null){
+
                 const data_obj = JSON.parse(data);
                 $(document.body).addClass(data_obj.class_1);
                 $('.album').addClass(data_obj.class_2);
@@ -143,5 +149,121 @@
             });
         });
     </script>
+
+    <!-- favorite books -->
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            showFavoriteBook();
+
+            function showFavoriteBook(){
+                var favorite_books = localStorage.getItem('favorite_books');
+                if(favorite_books != null){
+                    var data = JSON.parse(favorite_books);
+
+                    data.reverse();
+
+                    for(var i=0; i<data.length; i++){
+                        var title = data[i].name;
+                        var id = data[i].id;
+                        var url = data[i].url;
+                        var img = data[i].img;
+
+                        $('#fav-books').append(`<div class="row mt-3">
+                                    <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="`+ img +`" alt="`+ title +`"></div>
+                                    <div class="col-md-7">
+                                        <a href="`+ url +`">
+                                            <p>`+ title +`</p>
+                                            <p>adad</p>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-remove mt-3" onclick="RemoveF(`+ id +`)"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>`);
+
+                    }
+                }
+            }
+
+
+            $('.btn-thich-truyen').click(function(){
+
+                $('.fa-heart').css('color', '#fac');
+                var id = $('.wishlist_id').val();
+                var img = $('.card-img-top').attr('src');
+                var name = $('.wishlist_title').val();
+                var url = $('.wishlist_url').val();
+
+                var items = {
+                        'id':id,
+                        'img':img,
+                        'name':name,
+                        'url':url
+                    };
+
+                if(localStorage.getItem('favorite_books')==null){
+                    localStorage.setItem('favorite_books', '[]');
+                }
+
+                var old_data = JSON.parse(localStorage.getItem('favorite_books')); // lay nhung truyen da thich
+                var matches = $.grep(old_data, function(obj){
+                    return obj.id == id;
+                });
+
+                if(matches.length) {
+                    alert('Bạn Đã Thêm Truyện Này Rồi!');
+                }else{
+                    if(old_data.length <= 5){
+                        old_data.push(items);
+                    }else{
+                        alert('Truyện Yêu Thích Của Bạn Đã Giới Hạn!');
+                    }
+
+                    $('#fav-books').append(`<div class="row mt-3">
+                                    <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="`+ img +`" alt="`+ name +`"></div>
+                                    <div class="col-md-7">
+                                        <a href="`+ url +`">
+                                            <p>`+ name +`</p>
+                                            <p>adad</p>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-remove mt-3" onclick="RemoveF(`+ id +`)"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>`);
+
+
+
+                    localStorage.setItem('favorite_books', JSON.stringify(old_data));
+                    alert('Đã Lưu Vào Danh Sách Truyện Yêu Thích');
+                }
+
+                localStorage.setItem('favorite_books', JSON.stringify(old_data));
+
+
+            });
+        });
+
+        function RemoveF(id){
+            var favorite_books = localStorage.getItem('favorite_books');
+            var result = confirm("Want to delete?");
+            if (result) {
+                if(favorite_books != null){
+                    var data = JSON.parse(favorite_books);
+                    data.reverse();
+
+                    data.forEach(function(item, index){
+                        if(id == item.id){
+                            data.splice(index, 1);
+                            window.location.reload();
+                        }
+                    });
+                    localStorage.setItem('favorite_books', JSON.stringify(data));
+                }
+            }
+
+        }
+
+    </script>
+
+
 </body>
 </html>

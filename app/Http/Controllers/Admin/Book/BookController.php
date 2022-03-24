@@ -54,7 +54,7 @@ class BookController extends Controller
                 'category_id' => $request->input('category_id'),
                 'thumb' => $request->input('thumb'),
                 'active' => $request->input('active'),
-                'created_at' => Carbon::now('Asia/Ha_Noi')
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
             session()->flash('success', 'Thêm Truyện Thành Công');
             return redirect()->route('book.create');
@@ -103,7 +103,7 @@ class BookController extends Controller
             $book->thumb = $request ->input('thumb');
             $book->category_id = $request ->input('category_id');
             $book->active = $request->input('active');
-            $book->updated_at = Carbon::now('Asia/Ha_Noi');
+            $book->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
             $book->save();
             session()->flash('success', 'Cập Nhật Truyện Thành Công');
             return redirect()->route('book.index');

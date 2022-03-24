@@ -31,6 +31,7 @@ class HomeController extends Controller
     public function doctruyen($slug=''){
         $n = Book::where('slug', '=', $slug)->first();
         $chapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'asc')->get();
+        $update_chapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'desc')->first();
         $oneChapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'asc')->first();
         $lastChapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'desc')->first();
         $sameCate = Book::where('category_id', '=', $n->categories->id)->whereNotIn('id', [$n->id])->orderBy('id', 'desc')->get();
@@ -39,6 +40,7 @@ class HomeController extends Controller
             'categories' => Category::where('active', '=', 1)->orderBy('id', 'desc')->get(),
             'books' => Book::where('slug', '=', $slug)->first(),
             'chapters' => $chapter,
+            'update_chapter' => $update_chapter,
             'sameCate' => $sameCate,
             'oneChapter' => $oneChapter,
             'lastChapter' => $lastChapter
@@ -80,7 +82,6 @@ class HomeController extends Controller
         $data = $request->all();
         if($data['keywords']){
             $book = Book::where('active', '=', 1)->where('name', 'LIKE', '%'. $data['keywords'] . '%')->get();
-            // dd($book);
             $html .= "<ul class='dropdown-menu show' style='position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(-213px, 40px, 0px);'>";
 
             foreach ($book as $b){

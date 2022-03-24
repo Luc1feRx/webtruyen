@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Chapter\ChapterRequest;
 use App\Models\Book;
 use App\Models\Chapter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ChapterController extends Controller
@@ -54,7 +55,8 @@ class ChapterController extends Controller
                 'description' => $request->input('description'),
                 'content' => $request->input('content'),
                 'book_id' => $request->input('book_id'),
-                'active' => $request->input('active')
+                'active' => $request->input('active'),
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
             session()->flash('success', 'Thêm Chapter Thành Công');
             return redirect()->route('chapters.create');
@@ -108,6 +110,7 @@ class ChapterController extends Controller
             $chapter->content = $request ->input('content');
             $chapter->book_id = $request ->input('book_id');
             $chapter->active = $request->input('active');
+            $chapter->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
             $chapter->save();
             session()->flash('success', 'Cập Nhật Chapter Thành Công');
             return redirect()->route('chapters.index');
