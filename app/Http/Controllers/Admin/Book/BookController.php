@@ -53,6 +53,8 @@ class BookController extends Controller
                 'description' => $request->input('description'),
                 'category_id' => $request->input('category_id'),
                 'thumb' => $request->input('thumb'),
+                'author' => $request->input('author'),
+                'hot_book' => $request->input('hot_book'),
                 'active' => $request->input('active'),
                 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
@@ -102,6 +104,7 @@ class BookController extends Controller
             $book->description = $request->input('description');
             $book->thumb = $request ->input('thumb');
             $book->category_id = $request ->input('category_id');
+            $book->hot_book = $request->input('hot_book');
             $book->active = $request->input('active');
             $book->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
             $book->save();
@@ -132,5 +135,12 @@ class BookController extends Controller
         }catch(\Exception $e){
             session()->flash('error', $e);
         }
+    }
+
+    public function featuredBooks(Request $request){
+        $data = $request->all();
+        $book = Book::findOrFail($data['hot_book_id']);
+        $book->hot_book = $data['hot_books'];
+        $book->save();
     }
 }

@@ -110,6 +110,8 @@ $('#upload').change(function() {
     });
 });
 
+
+
 //slug
 
 function ChangeToSlug()
@@ -143,6 +145,4 @@ function ChangeToSlug()
                 //In slug ra textbox có id “slug”
             document.getElementById('convert_slug').value = slug;
         }
-
-
 

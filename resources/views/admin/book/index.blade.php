@@ -11,6 +11,7 @@
                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Tên Truyện</th>
                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Danh Mục</th>
                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Kích Hoạt</th>
+                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Truyện Nổi Bật</th>
                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Update</th>
                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 100px">&nbsp;</th>
             </tr>
@@ -23,6 +24,18 @@
                     <td>{{$item->name}}</td>
                     <td>{{$item->categories->name}}</td>
                     <td> {!! $item->active == 0 ? '<a href=""><span><i style="font-size: 23px; color: red;" class="fa fa-thumbs-down"></i></span></a>' : '<a href=""><span><i style="font-size: 23px; color: green;" class="fa fa-thumbs-up"></i></span></a>' !!} </td>
+                    <td>
+                        <div class="form-group">
+                            <form>
+                                {{ csrf_field() }}
+                                <select name="hot_book" data-id="{{$item->id}}" class="form-control hot_books">
+                                    <option value="0" {{$item->hot_book == 0 ? 'selected' : ''}}>Truyện Mới</option>
+                                    <option value="1" {{$item->hot_book == 1 ? 'selected' : ''}}>Truyện Nổi Bật</option>
+                                    <option value="2" {{$item->hot_book == 2 ? 'selected' : ''}}>Truyện Xem Nhiều</option>
+                                </select>
+                            </form>
+                          </div>
+                    </td>
                     <td>{{$item->updated_at}} - {{$item->updated_at->diffForHumans()}}</td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="{{ route('book.edit', ['book'=>$item->id]) }}"><i class="fas fa-edit"></i></a>

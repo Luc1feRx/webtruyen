@@ -10,3 +10,5 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('template/admin/dist/css/adminlte.min.css') }}">
 
+<link rel="stylesheet" href="{{ asset('template/admin/css/sweetalert.css') }}">
+

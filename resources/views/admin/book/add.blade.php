@@ -54,6 +54,21 @@
             <input type="hidden" class="form-control" name="thumb" id="thumb">
         </div>
 
+        <div class="form-group">
+            <label for="exampleInputFile">Truyện Nổi Bật/HOT</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="0" name="hot_book" checked>
+              <label class="form-check-label">Truyện Mới</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="1" name="hot_book">
+                <label class="form-check-label">Truyện Nổi Bật</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="2" name="hot_book">
+                <label class="form-check-label">Truyện Xem Nhiều</label>
+            </div>
+          </div>
 
         <div class="form-group">
             <label for="exampleInputFile">Kích Hoạt</label>

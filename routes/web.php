@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/chapters', ChapterController::class);
 
         Route::post('/storage/upload', [UploadController::class, 'store']);
+
+        Route::post('/featured-books', [BookController::class, 'featuredBooks'])->name('featured-books');
     });
 
 });

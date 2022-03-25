@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <label for="exampleInputEmail1">Slug</label>
-            <input type="text" class="form-control" value="{{old('slug')}}" placeholder="Nhập Slug" name="slug" id="convert_slug">
+            <input type="text" class="form-control" value="{{$books->slug}}" placeholder="Nhập Slug" name="slug" id="convert_slug">
         </div>
 
         <div class="form-group">
@@ -55,6 +55,22 @@
             </div>
             <input type="hidden" class="form-control" name="thumb" value="{{$books->thumb}}" id="thumb">
         </div>
+
+        <div class="form-group">
+            <label for="exampleInputFile">Truyện Nổi Bật/HOT</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="0" name="hot_book" {{$books->hot_book == 0 ? 'checked' : ''}}>
+              <label class="form-check-label">Truyện Mới</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="1" name="hot_book" {{$books->hot_book == 1 ? 'checked' : ''}}>
+                <label class="form-check-label">Truyện Nổi Bật</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="2" name="hot_book" {{$books->hot_book == 2 ? 'checked' : ''}}>
+                <label class="form-check-label">Truyện Xem Nhiều</label>
+            </div>
+          </div>
 
 
         <div class="form-group">

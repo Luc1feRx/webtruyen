@@ -20,7 +20,8 @@ class Book extends Model
         'description',
         'category_id',
         'thumb',
-        'thumb',
+        'author',
+        'hot_book',
         'active','created_at', 'updated_at'
     ];
 

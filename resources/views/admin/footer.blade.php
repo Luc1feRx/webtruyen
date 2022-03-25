@@ -26,6 +26,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('template/admin/dist/js/demo.js') }}"></script>
 <script src="{{ asset('template/admin/js/main.js') }}"></script>
+<script src="{{ asset('template/admin/js/sweetalert.js') }}"></script>
 @yield('ckeditor')
 <!-- Page specific script -->
 @yield('footer')
@@ -76,3 +77,42 @@ $(function () {
 });
 </script>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.hot_books').change(function(e){
+            e.preventDefault();
+            var hot_books = $(this).val();
+            var hot_book_id = $(this).data('id');
+            var _token = $('input[name="_token"]').val();
+            if(hot_books == 0){
+                var title = 'Thông Báo';
+                var text = 'Thay Đổi Truyện Mới Thành Công';
+                var icon = 'success';
+                var confirmButtonText = 'Oke';
+            }else if(hot_books == 1){
+                var title = 'Thông Báo';
+                var text = 'Thay Đổi Truyện Nổi Bật Thành Công';
+                var icon = 'success';
+                var confirmButtonText = 'Oke';
+            }else if(hot_books == 2){
+                var title = 'Thông Báo';
+                var text = 'Thay Đổi Truyện Xem Nhiều Thành Công';
+                var icon = 'success';
+                var confirmButtonText = 'Oke';
+            }
+            $.ajax({
+                url: "{{ route('featured-books') }}",
+                method: 'POST',
+                data:{hot_books:hot_books, hot_book_id:hot_book_id, _token: _token},
+                    success: function(data){
+                        Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: icon,
+                        confirmButtonText: confirmButtonText
+                        });
+                    }
+                });
+        });
+    });
+</script>
