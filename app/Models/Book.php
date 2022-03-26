@@ -22,6 +22,7 @@ class Book extends Model
         'thumb',
         'author',
         'hot_book',
+        'views',
         'active','created_at', 'updated_at'
     ];
 

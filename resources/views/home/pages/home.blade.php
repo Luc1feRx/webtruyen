@@ -88,7 +88,7 @@
                             </ul>
                           </div>
                           <div style="width: 100%;" class="mt-2 d-flex justify-content-between">
-                            <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
+                            <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> {{$book->views}}</a>
                             <a href="{{ route('doc-truyen', ['slug'=>$book->slug]) }}" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
                             <small class="mp-2 d-flex justify-content-center text-muted">Cập Nhật: {{$book->updated_at->diffForHumans()}}</small>
                           </div>

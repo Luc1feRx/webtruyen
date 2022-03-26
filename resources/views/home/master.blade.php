@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('template/dist/assets/owl.carousel.css') }}" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('template/dist/assets/owl.theme.default.min.css') }}" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="{{ asset('template/css/sweetalert.css') }}">
 </head>
 <body>
 
@@ -48,6 +48,7 @@
     <script src="{{ asset('template/bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('template/js/Jquery.js') }}" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('template/dist/owl.carousel.js') }}" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ asset('template/js/sweetalert.js') }}"></script>
     <script type="text/javascript">
         $('.owl-carousel').owlCarousel({
             loop:true,
@@ -182,6 +183,10 @@
                                 </div>`);
 
                     }
+                }else if(favorite_books == []){
+                    $('#fav-books').append(`<div class="mt-2 card-title alert alert-danger">
+                                <p>Đang Cập Nhật</p>
+                            </div>`);
                 }
             }
 
@@ -233,7 +238,16 @@
 
 
                     localStorage.setItem('favorite_books', JSON.stringify(old_data));
-                    alert('Đã Lưu Vào Danh Sách Truyện Yêu Thích');
+                    var title = 'Thông Báo';
+                    var text = 'Đã Lưu Vào Danh Sách Truyện Yêu Thích';
+                    var icon = 'success';
+                    var confirmButtonText = 'Oke';
+                    Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: icon,
+                        confirmButtonText: confirmButtonText
+                    });
                 }
 
                 localStorage.setItem('favorite_books', JSON.stringify(old_data));
@@ -244,21 +258,35 @@
 
         function RemoveF(id){
             var favorite_books = localStorage.getItem('favorite_books');
-            var result = confirm("Want to delete?");
-            if (result) {
-                if(favorite_books != null){
-                    var data = JSON.parse(favorite_books);
-                    data.reverse();
+            var result = Swal.fire({
+                    title: 'Thông Báo',
+                    text: "Bạn Chắc Chứ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Xóa'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if(favorite_books != null){
+                                var data = JSON.parse(favorite_books);
+                                data.reverse();
 
-                    data.forEach(function(item, index){
-                        if(id == item.id){
-                            data.splice(index, 1);
-                            window.location.reload();
+                                data.forEach(function(item, index){
+                                    if(id == item.id){
+                                        data.splice(index, 1);
+                                        Swal.fire(
+                                        'Deleted!',
+                                        'Đã Xóa Thành Công',
+                                        'success'
+                                        );
+                                        setTimeout(location.reload.bind(location), 1500);
+                                    }
+                                });
+                                localStorage.setItem('favorite_books', JSON.stringify(data));
+                            }
                         }
                     });
-                    localStorage.setItem('favorite_books', JSON.stringify(data));
-                }
-            }
 
         }
 

@@ -7,14 +7,16 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
     public function index(){
+        $books = Book::where('active', '=', 1)->orderBy('id', 'desc')->get();
         return view('home.pages.home', [
             'title' => 'Home',
             'categories' => Category::where('active', '=', 1)->orderBy('id', 'desc')->get(),
-            'books' => Book::where('active', '=', 1)->orderBy('id', 'desc')->get()
+            'books' => $books
         ]);
     }
 
@@ -35,15 +37,33 @@ class HomeController extends Controller
         $oneChapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'asc')->first();
         $lastChapter = Chapter::where('book_id', '=', $n->id)->orderBy('id', 'desc')->first();
         $sameCate = Book::where('category_id', '=', $n->categories->id)->whereNotIn('id', [$n->id])->orderBy('id', 'desc')->get();
+        $sidebarFeatureBooks = Book::where('hot_book', '=', 1)->orderBy('id', 'desc')->take(5)->get();
+        $FeatureBooks = Book::where('hot_book', '=', 2)->orderBy('id', 'desc')->take(5)->get();
+        $NewBooks = Book::where('hot_book', '=', 0)->orderBy('id', 'desc')->take(5)->get();
+        $bookviews = Book::findOrFail($n->id);
+        $view = session()->get('views');
+        if(Cookie::get($n->id)!=''){
+            Cookie::set('$n->id', '1', 60);
+            $bookviews->incrementReadCount();
+        }
+        if($view == null){
+            session()->put('views', 1); //set giá trị cho session view
+            $bookviews->increment('views');
+        }else if($view != null){
+            $bookviews->increment('views');
+        }
         return view('home.pages.book', [
             'title' => $n->name,
             'categories' => Category::where('active', '=', 1)->orderBy('id', 'desc')->get(),
-            'books' => Book::where('slug', '=', $slug)->first(),
+            'books' => $n,
             'chapters' => $chapter,
             'update_chapter' => $update_chapter,
             'sameCate' => $sameCate,
             'oneChapter' => $oneChapter,
-            'lastChapter' => $lastChapter
+            'lastChapter' => $lastChapter,
+            'sidebarFeatureBooks' => $sidebarFeatureBooks,
+            'FeatureBooks' => $FeatureBooks,
+            'NewBooks' => $NewBooks
         ]);
     }
 

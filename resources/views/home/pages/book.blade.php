@@ -32,7 +32,7 @@
                             {{$update_chapter->updated_at->diffForHumans()}}
                         @endif</li>
                         <li class="mt-1">Số Chapter: 32</li>
-                        <li class="mt-1">Số Lượt Xem: 42525</li>
+                        <li class="mt-1">Số Lượt Xem: {{$books->views}}</li>
                         <li class="mt-1"><a href="">Xem Muc Luc</a></li>
                         @if ($oneChapter && $lastChapter)
                                 <li class="mt-1">
@@ -56,23 +56,27 @@
               <hr>
               <hr>
 
-                <h4>Mục Lục</h4>
-                <ul style="list-style: none;">
-                    @php
-                        $mucluc = count($chapters);
-                    @endphp
-                    @if ($mucluc != 0)
-                        <ul class="list-group">
-                        @foreach ($chapters as $chapter)
-                            <li class="list-group-item mt-1"><a style="text-decoration: none; color: black;" href="{{ route('chapter', ['slug'=>$chapter->slug]) }}">{{$chapter->name}}</a></li>
-                        @endforeach
+              <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <h4>Mục Lục</h4>
+                        <ul style="list-style: none;">
+                            @php
+                                $mucluc = count($chapters);
+                            @endphp
+                            @if ($mucluc != 0)
+                                <ul class="list-group">
+                                @foreach ($chapters as $chapter)
+                                    <li class="list-group-item mt-1"><a style="text-decoration: none; color: black;" href="{{ route('chapter', ['slug'=>$chapter->slug]) }}">{{$chapter->name}}</a></li>
+                                @endforeach
+                                </ul>
+                            @else
+                                <div class="mt-2 card-title alert alert-danger">
+                                    <p>Đang Cập Nhật</p>
+                                </div>
+                            @endif
                         </ul>
-                    @else
-                        <div class="mt-2 card-title alert alert-danger">
-                            <p>Đang Cập Nhật</p>
-                        </div>
-                    @endif
-              </ul>
+                    </div>
+              </div>
 
               <div class="fb-comments" data-href="http://localhost:85/webtruyen/public/toan-chuc-phap-su-chi-mac-thien.html" data-width="" data-numposts="10"></div>
 
@@ -105,8 +109,31 @@
           </div>
       </div>
       <div class="col-md-3">
-        <h3 class="mt-3 fst-normal">Sách HOT</h3>
+        <h3 class="mt-3 fst-normal">Truyện Nổi Bật</h3>
+            @foreach ($sidebarFeatureBooks as $sidebarFeatureBook)
+            <div class="row mt-3">
+                <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="{{$sidebarFeatureBook->thumb}}" alt="{{$sidebarFeatureBook->name}}"></div>
+                <div class="col-md-7">
+                    <a style="text-decoration: none;" href="{{ route('doc-truyen', ['slug'=>$sidebarFeatureBook->slug]) }}">
+                        <p>Tên Truyện: {{$sidebarFeatureBook->name}}</p>
+                        <p>Lượt Xem: {{$sidebarFeatureBook->views}}</p>
+                    </a>
+                </div>
+            </div>
+            @endforeach
 
+            <h3 class="mt-3 fst-normal">Truyện Mới Cập Nhật</h3>
+            @foreach ($NewBooks as $NewBook)
+            <div class="row mt-3">
+                <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="{{$NewBook->thumb}}" alt="{{$sidebarFeatureBook->name}}"></div>
+                <div class="col-md-7">
+                    <a style="text-decoration: none;" href="{{ route('doc-truyen', ['slug'=>$NewBook->slug]) }}">
+                        <p>Tên Truyện: {{$NewBook->name}}</p>
+                        <p>Lượt Xem: {{$NewBook->views}}</p>
+                    </a>
+                </div>
+            </div>
+            @endforeach
         <h3 class="mt-3 fst-normal">Truyện Yêu Thích</h3>
         <div id="fav-books"></div>
     </div>
