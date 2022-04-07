@@ -20,4 +20,8 @@ class Category extends Model
         return $this->hasMany(Book::class, 'category_id', 'id');
     }
 
+    public function bookss(){
+        return $this->belongsToMany(Book::class, 'category_book', 'category_id', 'book_id');
+    }
+
 }

@@ -13,25 +13,24 @@
             <div class="album py-5 bg-light">
 
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
-                    @foreach ($books as $book)
+                    @foreach ($cates->bookss as $book)
                     <div class="col">
-                      <div class="card shadow-sm">
-                          <a href="{{ route('doc-truyen', ['slug'=>$book->slug]) }}"><img class="card-img-top" width="80px" src="{{$book->thumb}}" alt=""></a>
-
-                        <div class="card-body">
-                            <h5>{{$book->name}}</h5>
-                          <div class="card-text">{{ $book->summary }}</div>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group mt-2">
-                              <a href="{{ route('doc-truyen', ['slug'=>$book->slug]) }}" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
-                              <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
+                        <div class="card shadow-sm">
+                            <a href="{{ route('doc-truyen', ['slug'=>$book->slug]) }}"><img class="card-img-top" width="80px" src="{{$book->thumb}}" alt=""></a>
+                          <div class="card-body">
+                              <h5>{{$book->name}}</h5>
+                            <div class="card-text">{{ $book->summary }}</div>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group mt-2">
+                                <a href="{{ route('doc-truyen', ['slug'=>$book->slug]) }}" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
+                                <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
+                              </div>
+                              <small class="text-muted">9 mins ago</small>
                             </div>
-                            <small class="text-muted">9 mins ago</small>
                           </div>
                         </div>
-                      </div>
 
-                    </div>
+                      </div>
                     @endforeach
 
                   </div>
@@ -42,6 +41,7 @@
                             <p>Đang Cập Nhật</p>
                         </div>
                     @endif
+
 
 @endsection
 

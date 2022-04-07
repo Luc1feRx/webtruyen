@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Book\BookRequest;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Category_Book;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -22,7 +23,7 @@ class BookController extends Controller
     {
         return view('admin.book.index', [
             'title' => 'Danh Sách Truyện',
-            'books' => Book::with('categories')->orderBy('id', 'desc')->paginate(10),
+            'books' => Book::with('book_in_multiple_cate')->orderBy('id', 'desc')->paginate(10),
             'name' => session()->get('email')
         ]);
     }
@@ -44,20 +45,23 @@ class BookController extends Controller
     public function store(BookRequest $request)
     {
         try{
-            $request->except('_token');
-            Book::create([
-                'name' => $request->input('name'),
-                'slug' => $request->input('slug'),
-                'summary' => $request->input('summary'),
-                'author' => $request->input('author'),
-                'description' => $request->input('description'),
-                'category_id' => $request->input('category_id'),
-                'thumb' => $request->input('thumb'),
-                'author' => $request->input('author'),
-                'hot_book' => $request->input('hot_book'),
-                'active' => $request->input('active'),
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-            ]);
+            $book = new Book();
+            $data = $request->all();
+            $book->name = $data['name'];
+            $book->slug = $data['slug'];
+            $book->summary = $data['summary'];
+            $book->author = $data['author'];
+            $book->description = $data['description'];
+            $book->thumb = $data['thumb'];
+            $book->hot_book = $data['hot_book'];
+            $book->active = $data['active'];
+            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+            foreach($data['categories'] as $category){
+                $cate = $category[0];
+            }
+            $book->category_id = $cate;
+            $book->save();
+            $book->book_in_multiple_cate()->attach($data['categories']);
             session()->flash('success', 'Thêm Truyện Thành Công');
             return redirect()->route('book.create');
         }catch(\Exception $e){
@@ -84,11 +88,14 @@ class BookController extends Controller
      */
     public function edit($id)
     {
+        $book = Book::findOrFail($id);
+        $byCates = $book->book_in_multiple_cate;
         return view('admin.book.edit', [
             'title' => 'Cập Nhật Truyện',
             'books' => Book::findOrFail($id),
             'name' => session()->get('email'),
-            'categories' => Category::orderBy('id', 'desc')->get()
+            'categories' => Category::orderBy('id', 'desc')->get(),
+            'byCates' => $byCates
         ]);
     }
 
@@ -97,17 +104,22 @@ class BookController extends Controller
         try{
             $request->except('_token');
             $book = Book::findOrFail($id);
-            $book->name = $request->input('name');
-            $book->slug = $request->input('slug');
-            $book->summary = $request->input('summary');
-            $book->author = $request->input('author');
-            $book->description = $request->input('description');
-            $book->thumb = $request ->input('thumb');
-            $book->category_id = $request ->input('category_id');
-            $book->hot_book = $request->input('hot_book');
-            $book->active = $request->input('active');
-            $book->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+            $data = $request->all();
+            $book->name = $data['name'];
+            $book->slug = $data['slug'];
+            $book->summary = $data['summary'];
+            $book->author = $data['author'];
+            $book->description = $data['description'];
+            $book->thumb = $data['thumb'];
+            $book->hot_book = $data['hot_book'];
+            $book->active = $data['active'];
+            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+            foreach($data['categories'] as $category){
+                $cate = $category[0];
+            }
+            $book->category_id = $cate;
             $book->save();
+            $book->book_in_multiple_cate()->sync($data['categories']);
             session()->flash('success', 'Cập Nhật Truyện Thành Công');
             return redirect()->route('book.index');
         }catch(\Exception $e){

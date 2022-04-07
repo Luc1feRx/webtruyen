@@ -33,4 +33,8 @@ class Book extends Model
     public function chapters(){
         return $this->hasMany(Chapter::class, 'book_id', 'id');
     }
+
+    public function book_in_multiple_cate(){
+        return $this->belongsToMany(Category::class, 'category_book', 'book_id', 'category_id');
+    }
 }

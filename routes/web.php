@@ -58,3 +58,9 @@ Route::get('/search', [HomeController::class, 'Search'])->name('search');
 
 //search by ajax
 Route::post('/search-keywords', [HomeController::class, 'SearchAjax'])->name('search-ajax');
+
+//tabs_category
+Route::post('/tabs-category', [HomeController::class, 'tabCate'])->name('tabCate');
+
+//filter
+Route::get('/filtered/{char}', [HomeController::class, 'filteredChar'])->name('filteredChar');

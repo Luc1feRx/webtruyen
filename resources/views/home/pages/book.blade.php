@@ -8,7 +8,9 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang Chủ</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('danh-muc', ['slug' => $books->categories->slug]) }}">{{$books->categories->name}}</a></li>
+        @foreach ($books->book_in_multiple_cate as $item)
+        <li class="breadcrumb-item"><a href="{{ route('danh-muc', ['slug' => $item->slug]) }}">{{$item->name}}</a></li>
+        @endforeach
         <li class="breadcrumb-item active" aria-current="page">{{$title}}</li>
     </ol>
   </nav>
@@ -19,6 +21,7 @@
               <input type="hidden" value="{{$books->name}}" class="wishlist_title">
               <input type="hidden" value="{{URL::current()}}" class="wishlist_url">
               <input type="hidden" value="{{$books->id}}" class="wishlist_id">
+              <input type="hidden" value="{{$books->views}}" class="wishlist_view">
                 <div class="col-md-3">
                     <img class="card-img-top" width="100px" src="{{$books->thumb}}" alt="">
                 </div>
@@ -26,7 +29,11 @@
                     <ul style="list-style: none;">
                         <li class="mt-1">Tên Truyện: {{$books->name}}</li>
                         <li class="mt-1">Tác Giả: {{$books->author}}</li>
-                        <li class="mt-1">Thể Loại: <a style="text-decoration: none;" href="{{ route('danh-muc', ['slug'=>$books->categories->slug]) }}">{{$books->categories->name}}</a></li>
+                        <li class="mt-1">Thể Loại:
+                            @foreach ($books->book_in_multiple_cate as $boo)
+                                <span class="badge badge-primary"><a style="text-decoration: none;" href="{{ route('danh-muc', ['slug'=>$boo->slug]) }}">{{$boo->name}}</a></span>
+                            @endforeach
+                        </li>
                         <li class="mt-1">Ngày Đăng: {{$books->created_at->diffForHumans()}}</li>
                         <li class="mt-1">Cập Nhật Lúc: @if ($update_chapter != null)
                             {{$update_chapter->updated_at->diffForHumans()}}
@@ -56,26 +63,34 @@
               <hr>
               <hr>
 
+              <style>
+                  ul.list-chapter{
+                      -moz-column-count: 3;
+                      -moz-column-gap: 20px;
+                      -webkit-column-count: 3;
+                      -webkit-column-gap: 20px;
+                      column-count: 3;
+                      column-gap: 20px;
+                  }
+              </style>
+
               <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6">
                         <h4>Mục Lục</h4>
-                        <ul style="list-style: none;">
+                        <ul class="list-chapter" style="list-style-type: disc;">
                             @php
                                 $mucluc = count($chapters);
                             @endphp
                             @if ($mucluc != 0)
-                                <ul class="list-group">
-                                @foreach ($chapters as $chapter)
-                                    <li class="list-group-item mt-1"><a style="text-decoration: none; color: black;" href="{{ route('chapter', ['slug'=>$chapter->slug]) }}">{{$chapter->name}}</a></li>
-                                @endforeach
-                                </ul>
+                            @foreach ($chapters as $chapter)
+                                <li class="list-group-item mt-1"><a style="text-decoration: none; color: black;" href="{{ route('chapter', ['slug'=>$chapter->slug]) }}">{{$chapter->name}}</a></li>
+                            @endforeach
                             @else
                                 <div class="mt-2 card-title alert alert-danger">
                                     <p>Đang Cập Nhật</p>
                                 </div>
                             @endif
                         </ul>
-                    </div>
+
               </div>
 
               <div class="fb-comments" data-href="http://localhost:85/webtruyen/public/toan-chuc-phap-su-chi-mac-thien.html" data-width="" data-numposts="10"></div>
@@ -122,18 +137,6 @@
             </div>
             @endforeach
 
-            <h3 class="mt-3 fst-normal">Truyện Mới Cập Nhật</h3>
-            @foreach ($NewBooks as $NewBook)
-            <div class="row mt-3">
-                <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="{{$NewBook->thumb}}" alt="{{$sidebarFeatureBook->name}}"></div>
-                <div class="col-md-7">
-                    <a style="text-decoration: none;" href="{{ route('doc-truyen', ['slug'=>$NewBook->slug]) }}">
-                        <p>Tên Truyện: {{$NewBook->name}}</p>
-                        <p>Lượt Xem: {{$NewBook->views}}</p>
-                    </a>
-                </div>
-            </div>
-            @endforeach
         <h3 class="mt-3 fst-normal">Truyện Yêu Thích</h3>
         <div id="fav-books"></div>
     </div>

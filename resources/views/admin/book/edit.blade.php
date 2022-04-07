@@ -40,11 +40,21 @@
 
         <div class="form-group">
             <label>Danh Mục</label>
-            <select class="form-control" name="category_id">
+            <br>
+            <div class="form-check form-check-inline">
                 @foreach ($categories as $item)
-                    <option {{$item->id == $books->category_id ? ' selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
+                    <div class="form-group px-1">
+                        <input class="form-check-input" name="categories[]"
+
+                        @if ($byCates->contains($item->id))
+                            checked
+                        @endif
+
+                        type="checkbox" id="cate_{{$item->id}}" value="{{$item->id}}">
+                        <label class="form-check-label" for="cate_{{$item->id}}">{{$item->name}}</label>
+                    </div>
                 @endforeach
-            </select>
+            </div>
           </div>
 
           <div class="form-group">

@@ -22,7 +22,14 @@
                     <td class="dtr-control sorting_1" tabindex="0">{{$item->id}}</td>
                     <td><img src="{{$item->thumb}}" style="width: 150px; height: 210px" alt=""></td>
                     <td>{{$item->name}}</td>
-                    <td>{{$item->categories->name}}</td>
+                    <td>
+                        @foreach ($item->book_in_multiple_cate as $cates)
+                        <span class="badge badge-dark">
+                            {{$cates->name}}
+                        </span>
+                        <br>
+                        @endforeach
+                    </td>
                     <td> {!! $item->active == 0 ? '<a href=""><span><i style="font-size: 23px; color: red;" class="fa fa-thumbs-down"></i></span></a>' : '<a href=""><span><i style="font-size: 23px; color: green;" class="fa fa-thumbs-up"></i></span></a>' !!} </td>
                     <td>
                         <div class="form-group">

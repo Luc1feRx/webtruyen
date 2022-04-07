@@ -71,9 +71,39 @@
 
 
 
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+      @php
+          $i = 0;
+
+      @endphp
+    @foreach ($categories as $tab_category)
+    @php
+        $i++;
+    @endphp
+    <form>
+        {{ csrf_field() }}
+
+    <li class="nav-item" role="presentation">
+        <form action="">
+            <a data-category_id="{{$tab_category->id}}" class="nav-link tabs_category {{$i == 0 ? 'active' : ''}}" id="home-tab" data-bs-toggle="tab" href="#{{$tab_category->slug}}" name="tab_category[]" role="tab" aria-controls="home" aria-selected="true">{{$tab_category->name}}</a>
+        </form>
+    </li>
+    </form>
+    @endforeach
+  </ul>
+
+  <div class="album py-5 bg-light tab-content" >
+    <div id="tab_category" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
+
+    </div>
+</div>
+
+
+
 <!---- new book -->
             <h3 class="mt-3">Truyện Mới Cập Nhật</h3>
             <div class="album py-5 bg-light">
+                <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
                     @foreach ($books as $book)
                     <div class="col">
@@ -84,7 +114,9 @@
                             <h5>{{$book->name}}</h5>
                           <div class="card-text">
                             <ul class="tags">
-                              <li><a href="{{ route('danh-muc', ['slug' => $book->categories->slug]) }}" class="tag">{{$book->categories->name}}</a></li>
+                                @foreach ($book->book_in_multiple_cate as $cates)
+                                    <li><a href="{{ route('danh-muc', ['slug' => $cates->slug]) }}" class="tag">{{$cates->name}}</a></li>
+                                @endforeach
                             </ul>
                           </div>
                           <div style="width: 100%;" class="mt-2 d-flex justify-content-between">
@@ -97,89 +129,18 @@
 
                     </div>
                     @endforeach
-                    <a href="" class="btn btn-success mt-3">Xem Tất Cả</a>
                   </div>
+                </div>
               </div>
 
-                          <!---- good book -->
-            <h3 class="mt-3">Truyện Hay Đáng Xem</h3>
+              <!-- Filter books -->
+            <h3 class="mt-3">Lọc Truyện Từ A-Z</h3>
             <div class="album py-5 bg-light">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-5">
-                    <div class="col">
-                      <div class="card shadow-sm">
-                        <img class="card-img-top" width="100px" src="{{ asset('/hoang-hon.jpg') }}" alt="">
+                    @foreach (range('A', 'Z') as $char)
+                    <a href="{{ route('filteredChar', ['char'=>$char]) }}" class="btn btn-success" style="text-decoration: none; color: #fff">{{$char}}</a>
+                    @endforeach
+            </div>
 
-                        <div class="card-body">
-                            <h3>DADA</h3>
-                          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                              <a href="" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
-                              <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
-                            </div>
-                            <small class="text-muted">9 mins ago</small>
-                          </div>
-                        </div>
-                      </div>
-                      <a href="" class="btn btn-success mt-3">Xem Tất Cả</a>
-                    </div>
-
-                    <div class="col">
-                        <div class="card shadow-sm">
-                          <img class="card-img-top" width="100px" src="{{ asset('/hoang-hon.jpg') }}" alt="">
-
-                          <div class="card-body">
-                              <h3>DADA</h3>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                              <div class="btn-group">
-                                <a href="" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
-                              </div>
-                              <small class="text-muted">9 mins ago</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col">
-                        <div class="card shadow-sm">
-                          <img class="card-img-top" width="100px" src="{{ asset('/hoang-hon.jpg') }}" alt="">
-
-                          <div class="card-body">
-                              <h3>DADA</h3>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                              <div class="btn-group">
-                                <a href="" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
-                              </div>
-                              <small class="text-muted">9 mins ago</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col">
-                        <div class="card shadow-sm">
-                          <img class="card-img-top" width="100px" src="{{ asset('/hoang-hon.jpg') }}" alt="">
-
-                          <div class="card-body">
-                              <h3>DADA</h3>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                              <div class="btn-group">
-                                <a href="" class="btn btn-sm btn-outline-secondary">Đọc Ngay</a>
-                                <a href="" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i> 20333</a>
-                              </div>
-                              <small class="text-muted">9 mins ago</small>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                  </div>
-              </div>
 @endsection
 
 @section('slide')

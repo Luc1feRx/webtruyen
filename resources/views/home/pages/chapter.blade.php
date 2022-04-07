@@ -8,7 +8,9 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang Chủ</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('danh-muc', ['slug' => $cateb->categories->slug]) }}">{{$cateb->categories->name}}</a></li>
+        @foreach ($cateb->book_in_multiple_cate as $itemssss)
+            <li class="breadcrumb-item"><a href="{{ route('danh-muc', ['slug' => $itemssss->slug]) }}">{{$itemssss->name}}</a></li>
+        @endforeach
         <li class="breadcrumb-item"><a href="{{ route('doc-truyen', ['slug' => $cateb->slug]) }}">{{$cateb->name}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{$title}}</li>
     </ol>

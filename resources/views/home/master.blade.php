@@ -27,7 +27,49 @@
             background: #181818 !important;
             color: black;
         }
+
+        .item{
+            height: 240px;
+            width: 160px;
+            position: relative;
+            -webkit-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
+        }
+
+        .item-fillter{
+            float: left;
+            margin: 12px 0 0 12px;
+            height: 192px;
+            width: 129px;
+            position: relative;
+            -webkit-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
+        }
+
+        .title{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            color: #f4f4f4;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 5px 0;
+            text-shadow: 1px 2px 2px #000;
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+            text-align: center;
+            font-family: 'Roboto Condensed',Tahoma,sans-serif;
+        }
+
+        .title h3{
+            margin: 0;
+            padding: 0;
+            font-size: inherit;
+            display: inline-block;
+        }
+
     </style>
+
 
     <div class="container">
         <!---- menu -->
@@ -69,6 +111,21 @@
         })
     </script>
 
+    <!-- Tabs Category -->
+    <script type="text/javascript">
+        $('.tabs_category').click(function(){
+            let id = $(this).data('category_id');
+            let _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: "{{ route('tabCate') }}",
+                method: 'POST',
+                data: {id: id, _token:_token},
+                success: function(data){
+                    $('#tab_category').html(data);
+                }
+            });
+        });
+    </script>
     <!-- select chapter -->
     <script type="text/javascript">
         $('.select-chapter').on('change', function(){
@@ -89,7 +146,7 @@
 
     <!-- search by using ajax -->
     <script type="text/javascript">
-        $('#keywords').keyup(function(){
+        $('#keywords').on('keyup',function(){
             var keywords = $(this).val();
             if(keywords != ''){
                 var _token = $('input[name="_token"]').val();
@@ -170,13 +227,14 @@
                         var id = data[i].id;
                         var url = data[i].url;
                         var img = data[i].img;
+                        var view = data[i].view;
 
                         $('#fav-books').append(`<div class="row mt-3">
                                     <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="`+ img +`" alt="`+ title +`"></div>
                                     <div class="col-md-7">
-                                        <a href="`+ url +`">
+                                        <a style="text-decoration: none; color:#fff;" href="`+ url +`">
                                             <p>`+ title +`</p>
-                                            <p>adad</p>
+                                            <p><i class="fa-solid fa-eye"></i> `+ view +`</p>
                                         </a>
                                         <button type="button" class="btn btn-danger btn-remove mt-3" onclick="RemoveF(`+ id +`)"><i class="fa-solid fa-trash"></i></button>
                                     </div>
@@ -198,12 +256,13 @@
                 var img = $('.card-img-top').attr('src');
                 var name = $('.wishlist_title').val();
                 var url = $('.wishlist_url').val();
-
+                var view = $('.wishlist_view').val();
                 var items = {
                         'id':id,
                         'img':img,
                         'name':name,
-                        'url':url
+                        'url':url,
+                        'view':view
                     };
 
                 if(localStorage.getItem('favorite_books')==null){
@@ -227,9 +286,9 @@
                     $('#fav-books').append(`<div class="row mt-3">
                                     <div class="col-md-5"><img width="100%" class="img img-responsive card-img-top" src="`+ img +`" alt="`+ name +`"></div>
                                     <div class="col-md-7">
-                                        <a href="`+ url +`">
+                                        <a style="text-decoration: none; color:#fff;" href="`+ url +`">
                                             <p>`+ name +`</p>
-                                            <p>adad</p>
+                                            <p><i class="fa-solid fa-eye"></i> `+ view +`</p>
                                         </a>
                                         <button type="button" class="btn btn-danger btn-remove mt-3" onclick="RemoveF(`+ id +`)"><i class="fa-solid fa-trash"></i></button>
                                     </div>
