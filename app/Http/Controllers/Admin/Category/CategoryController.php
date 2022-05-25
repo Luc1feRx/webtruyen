@@ -4,30 +4,33 @@ namespace App\Http\Controllers\Admin\Category;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CategoryRequest;
+use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('api');
+    }
+
     public function index()
     {
+        $cate = Category::orderBy('id', 'desc')->paginate(15);
         return view('admin.category.index', [
             'title' => 'Danh Sách Danh Mục',
             'name' => session()->get('email'),
-            'categories' => Category::orderBy('id', 'desc')->paginate(15)
+            'categories' => CategoryResource::collection($cate)
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function GetAllCategory()
+    {
+        $cate = Category::orderBy('id', 'desc')->paginate(15);
+        return CategoryResource::collection($cate);
+    }
+
     public function create()
     {
         return view('admin.category.add', [
@@ -36,26 +39,18 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(CategoryRequest $request) // them danh muc
     {
-        try{
-            $request->except('_token');
-            Category::create([
-                'name' => $request->input('name'),
-                'slug' => $request->input('slug'),
-                'description' => $request->input('description'),
-                'active' => $request->input('active')
+        $category = new Category();
+        $category->name = $request->n;
+        $category->slug =  $request->s;
+        $category->description = $request->d;
+        $category->active = $request->a;
+        if($category->save()){
+            return response()->json([
+               'message' => 'Add Success',
+               'code' => 200
             ]);
-            session()->flash('success', 'Thêm Danh Mục Thành Công');
-            return redirect()->route('category.create');
-        }catch(\Exception $e){
-            session()->flash('error', $e);
         }
 
     }
@@ -78,13 +73,18 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
         return view('admin.category.edit', [
             'title' => 'Cập Nhật Danh Mục',
-            'categories' => Category::find($id),
+            'categories' => $category,
             'name' => session()->get('email')
         ]);
+        // return response()->json([
+        //     'cate' => $cate,
+        //     'code' => 200
+        // ]);
+
     }
 
     /**
@@ -92,39 +92,35 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, Category $category)
     {
         try{
-            $request->except('_token');
-            $cate = Category::find($id);
-            $cate->name = $request->input('name');
-            $cate->slug = $request->input('slug');
-            $cate->description = $request->input('description');
-            $cate->active = $request->input('active');
-            $cate->save();
-            session()->flash('success', 'Cập Nhật Danh Mục Thành Công');
-            return redirect()->route('category.index');
+            $category->name = $request->name;
+            $category->slug = $request->slug;
+            $category->description = $request->description;
+            $category->active = $request->active;
+            if($category->save()){
+                return response()->json([
+                    'message' => 'Update Success',
+                    'code' => 200
+                ]);
+            }
         }catch(\Exception $e){
             session()->flash('error', $e);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        try{
-            Category::findOrFail($id)->delete();
-            session()->flash('success', 'Xóa Thành Công');
-            return redirect()->route('category.index');
-        }catch(\Exception $e){
-            session()->flash('error', $e);
+        $category = Category::where('id', $id)->first();
+        if($category){
+            $category->delete();
+            return response()->json([
+                'message' => 'Delete Success',
+                'status' => 200
+            ]);
         }
     }
 }

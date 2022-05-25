@@ -22,29 +22,31 @@ use Illuminate\Support\Facades\Route;
 */
 
 //login
-Route::get('admin/login', [LoginController::class, 'index'])->name('get-login');
-Route::post('admin/login', [LoginController::class, 'store'])->name('login-admin');
-Route::post('admin/log-out', [LoginController::class, 'logout'])->name('log-out');
+// Route::get('admin/login', [LoginController::class, 'index'])->name('get-login');
+// Route::post('admin/login', [LoginController::class, 'store'])->name('login-admin');
+// Route::post('admin/log-out', [LoginController::class, 'logout'])->name('log-out');
 
 
-Route::middleware(['auth'])->group(function () {
 
-    Route::prefix('admin')->group(function () {
-        //dashboard
-        Route::get('/dashboard', [LoginController::class, 'show'])->name('dashboard');
 
-        Route::resource('/category', CategoryController::class);
+// Route::middleware(['auth'])->group(function () {
 
-        Route::resource('/book', BookController::class);
+//     Route::prefix('admin')->group(function () {
+//         //dashboard
+//         Route::get('/dashboard', [LoginController::class, 'show'])->name('dashboard');
 
-        Route::resource('/chapters', ChapterController::class);
+//         Route::resource('/category', CategoryController::class);
 
-        Route::post('/storage/upload', [UploadController::class, 'store']);
+//         Route::resource('/book', BookController::class);
 
-        Route::post('/featured-books', [BookController::class, 'featuredBooks'])->name('featured-books');
-    });
+//         Route::resource('/chapters', ChapterController::class);
 
-});
+//         Route::post('/storage/upload', [UploadController::class, 'store']);
+
+//         Route::post('/featured-books', [BookController::class, 'featuredBooks'])->name('featured-books');
+//     });
+
+// });
 
 
 //home

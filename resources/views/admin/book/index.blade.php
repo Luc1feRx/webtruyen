@@ -20,7 +20,7 @@
                 @foreach ($books as $item)
                 <tr class="odd">
                     <td class="dtr-control sorting_1" tabindex="0">{{$item->id}}</td>
-                    <td><img src="{{$item->thumb}}" style="width: 150px; height: 210px" alt=""></td>
+                    <td><img src="{{ asset($item->thumb) }}" style="width: 150px; height: 210px" alt=""></td>
                     <td>{{$item->name}}</td>
                     <td>
                         @foreach ($item->book_in_multiple_cate as $cates)
@@ -46,11 +46,12 @@
                     <td>{{$item->updated_at}} - {{$item->updated_at->diffForHumans()}}</td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="{{ route('book.edit', ['book'=>$item->id]) }}"><i class="fas fa-edit"></i></a>
-                        <form action="{{ route('book.destroy', ['book'=>$item->id]) }}" method="post">
+                        <a onclick="DeleteRow({{$item->id}}, `{{ route('book.destroy', ['book'=>$item->id]) }}`)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        {{-- <form action="{{ route('book.destroy', ['book'=>$item->id]) }}" method="post">
                             @method('DELETE')
                             {{ csrf_field() }}
-                            <button onclick="return confirm('Are you sure you want to destroy this?')" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                        </form>
+                            <button onclick="Delete({{$item->id}})" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        </form> --}}
                     </td>
                 </tr>
                 @endforeach

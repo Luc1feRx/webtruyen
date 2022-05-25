@@ -5,20 +5,22 @@ namespace App\Http\Controllers\Admin\Book;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Book\BookRequest;
 use App\Models\Book;
+use App\Models\BookCategory;
 use App\Models\Category;
 use App\Models\Category_Book;
 use Carbon\Carbon;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('api');
+    }
     public function index()
     {
         return view('admin.book.index', [
@@ -42,30 +44,38 @@ class BookController extends Controller
         ]);
     }
 
-    public function store(BookRequest $request)
+    public function store(Request $request)
     {
         try{
-            $book = new Book();
-            $data = $request->all();
-            $book->name = $data['name'];
-            $book->slug = $data['slug'];
-            $book->summary = $data['summary'];
-            $book->author = $data['author'];
-            $book->description = $data['description'];
-            $book->thumb = $data['thumb'];
-            $book->hot_book = $data['hot_book'];
-            $book->active = $data['active'];
-            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-            foreach($data['categories'] as $category){
-                $cate = $category[0];
+//            $book = new Book();
+//            $book->name = $request->name;
+//            $book->slug = $request->slug;
+//            $book->summary = $request->summary;
+//            $book->author = $request->author;
+//            $book->description = $request->description;
+            if($request->thumb){
+                $image = $request->thumb;
+                $extension = $image->getClientOriginalExtension();
+//                dd($extension);
+//                $file = Storage::disk('public')->put('images', $request->thumb);
+//                $book->thumb = 'storage/' . $file;
             }
-            $book->category_id = $cate;
-            $book->save();
-            $book->book_in_multiple_cate()->attach($data['categories']);
-            session()->flash('success', 'Thêm Truyện Thành Công');
-            return redirect()->route('book.create');
+//            $book->hot_book = $request->hot_book;
+//            $book->active = $request->active;
+//            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+//            foreach($request->categories as $category){
+//                $cate = $category[0];
+//            }
+//            $book->category_id = $cate;
+//
+//            if($book->save()){
+//                $book->book_in_multiple_cate()->attach($request->categories);
+//                return response()->json([
+//                    $book, 200, 'message' => 'Add Success'
+//                ]);
+//            }
         }catch(\Exception $e){
-            session()->flash('error', $e);
+            dd($e);
         }
     }
 
@@ -99,18 +109,28 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(BookRequest $request, $id)
+    public function update(Request $request, Book $book)
     {
         try{
-            $request->except('_token');
-            $book = Book::findOrFail($id);
             $data = $request->all();
             $book->name = $data['name'];
             $book->slug = $data['slug'];
             $book->summary = $data['summary'];
             $book->author = $data['author'];
             $book->description = $data['description'];
-            $book->thumb = $data['thumb'];
+            $destination = public_path("storage\\" . $book->thumb);
+            $fileName = "";
+            if($request->hasFile('new_thumb')){
+                if(File::exists($destination)){
+                    File::delete($destination);
+                }
+                $fileName = $request->file('new_thumb')->store('images', 'public');
+                // $book->thumb = $path;
+                $path = 'storage/' . $fileName;
+            }else{
+                $fileName = $book->thumb;
+            }
+            $book->thumb = $path;
             $book->hot_book = $data['hot_book'];
             $book->active = $data['active'];
             $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
@@ -120,8 +140,11 @@ class BookController extends Controller
             $book->category_id = $cate;
             $book->save();
             $book->book_in_multiple_cate()->sync($data['categories']);
-            session()->flash('success', 'Cập Nhật Truyện Thành Công');
-            return redirect()->route('book.index');
+            return response()->json([
+                $book, 200, 'message' => 'Update Success'
+            ]);
+            // session()->flash('success', 'Cập Nhật Truyện Thành Công');
+            // return redirect()->route('book.index');
         }catch(\Exception $e){
             session()->flash('error', $e);
         }
@@ -133,17 +156,21 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try{
-            $book = Book::findOrFail($id);
-            $bookThumb = str_replace('/webtruyen/storage/app/public/uploads/', '', $book->thumb);
-            if(Storage::disk('public')->exists('uploads/' . $bookThumb)){
+            $book = Book::where('id', $request->id)->first();
+            if($book){
                 $book->delete();
-                Storage::disk('public')->delete('uploads/' . $bookThumb);
+                $bookThumb = str_replace('/storage/images/', '', $book->thumb);
+                if(Storage::disk('public')->exists('images/' . $bookThumb)){
+                    Storage::disk('public')->delete('images/' . $bookThumb);
+                    return response()->json([
+                        'message' => 'Deleted successfully',
+                        'code' => 200
+                    ]);
+                }
             }
-            session()->flash('success', 'Xóa Thành Công');
-            return redirect()->route('book.index');
         }catch(\Exception $e){
             session()->flash('error', $e);
         }

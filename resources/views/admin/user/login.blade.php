@@ -4,6 +4,7 @@
     <title>{{$title}}</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href="{{ asset('template/admin/images/icons/favicon.ico') }}"/>
 <!--===============================================================================================-->
@@ -32,18 +33,18 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="{{ route('login-admin') }}" method="post">
+				<form class="login100-form validate-form" id="LoginUser" action="" method="post">
                     @include('admin.error.error')
 					<span class="login100-form-title p-b-34">
 						Admin Login
 					</span>
 						{{ csrf_field() }}
                         <div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20" data-validate="Type email">
-                            <input id="first-name" class="input100" type="email" name="admin_email" placeholder="Email">
+                            <input id="email" class="input100" type="email" name="email" placeholder="Email">
                             <span class="focus-input100"></span>
                         </div>
                         <div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
-                            <input class="input100" type="password" name="admin_password" placeholder="Password">
+                            <input id="password" class="input100" type="password" name="password" placeholder="Password">
                             <span class="focus-input100"></span>
                         </div>
 
@@ -102,5 +103,66 @@
 	<script src="{{ asset('template/admin/vendor/countdowntime/countdowntime.js') }}"></script>
 <!--===============================================================================================-->
 	<script src="{{ asset('template/admin/js/main.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        $('body').on('submit', '#LoginUser', function (e) {
+            e.preventDefault();
+
+            if(LoggedIn() == true){
+                window.location = "{{route('dashboard')}}";
+            }
+
+           let email = $('#email').val();
+           let password = $('#password').val();
+            let formData = {
+                email: email,
+                password: password
+            }
+            axios.post('/api/auth/login', formData, )
+                .then(function (response) {
+                    console.log(response.data);
+                    const access_token = response.data.access_token;
+                    localStorage.setItem('access_token', access_token);
+                    window.location = "{{route('dashboard')}}";
+                })
+                .catch(function (error) {
+                    console.log(error.data);
+                });
+        });
+
+        function payloads(token) {
+            const Payload = token.split(".")[1]; //get payload
+            return JSON.parse(atob(Payload));
+        }
+        //
+
+        function isCheckToken(token) {
+            const Payload = payloads(token);
+            console.log(Payload);
+            if (Payload) {
+                return (Payload.iss = !!("http://127.0.0.1:8000/api/auth/login" || "http://127.0.0.1:8000/api/auth/register"));
+            }
+            return false;
+        }
+
+        function LoggedIn() {
+            //get token from localstorage
+            const token = localStorage.getItem('access_token');
+            if(token){
+                if(isCheckToken(token)){return true;} return false;
+            }
+            return false;
+        }
+
+        function DashBoard() {
+            if(LoggedIn() == true){
+                window.location = "{{route('dashboard')}}";
+            }
+        }
+
+        DashBoard();
+    </script>
 </body>
 </html>

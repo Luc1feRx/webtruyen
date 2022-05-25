@@ -25,15 +25,18 @@ class BookRequest extends FormRequest
     {
         return [
             'name'=> 'required|max:255',
-            'thumb' => 'required|max:255',
+            'description' => 'required|max:255',
+            'author' => 'required|max:255',
+            'summary' => 'required|max:255|min:3'
         ];
     }
 
     public function messages(){
         return [
             'name.required' => 'Không Được để Trống Tên Danh Mục',
+            'author.required' => 'Không Được để Trống Tên Tác Giả',
             'description.required' => 'Không Được để Trống Mô Tả Danh Mục',
-            'thumb.required' => 'Không Được để Trống Hình Ảnh'
+            'summary.required' => 'Không Được để Trống Tóm Tắt Truyện'
         ];
     }
 }

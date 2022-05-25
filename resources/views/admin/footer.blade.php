@@ -27,6 +27,7 @@
 <script src="{{ asset('template/admin/dist/js/demo.js') }}"></script>
 <script src="{{ asset('template/admin/js/main.js') }}"></script>
 <script src="{{ asset('template/admin/js/sweetalert.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @yield('ckeditor')
 <!-- Page specific script -->
 @yield('footer')
@@ -116,3 +117,70 @@ $(function () {
         });
     });
 </script>
+
+<script type="text/javascript">
+   function DeleteRow(id, url) {
+       console.log(id);
+    // var result = Swal.fire({
+    //                 title: 'Thông Báo',
+    //                 text: "Bạn Chắc Chứ?",
+    //                 icon: 'warning',
+    //                 showCancelButton: true,
+    //                 confirmButtonColor: '#3085d6',
+    //                 cancelButtonColor: '#d33',
+    //                 confirmButtonText: 'Xóa'
+    //                 }).then((result) => {
+    //                     if (result.isConfirmed) {
+    //                           $.ajax({
+    //                             type: 'DELETE',
+    //                             datatype: 'JSON',
+    //                             data: {id},
+    //                             url: url,
+    //                             success: function(result){
+    //                               location.reload();
+    //                               console.log(url);
+    //                             }
+    //                         });
+    //                       }
+    //                     }
+    //                 );
+                }
+
+</script>
+
+  <script type="text/javascript">
+      function payloads(token) {
+          const Payload = token.split(".")[1]; //get payload
+          return JSON.parse(atob(Payload));
+      }
+      //
+
+      function isCheckToken(token) {
+          const Payload = payloads(token);
+          console.log(Payload.iss);
+          if (Payload) {
+              return (Payload.iss = !!("http://127.0.0.1:8000/api/auth/login" || "http://127.0.0.1:8000/api/auth/register"));
+          }
+          return false;
+      }
+
+      function LoggedIn() {
+          //get token from localstorage
+          const token = localStorage.getItem('access_token');
+          if(token){
+              if(isCheckToken(token)){return true;} return false;
+          }
+          return false;
+      }
+
+      function DashBoard() {
+          if(LoggedIn() == false){
+              window.location = "{{route('get-login')}}";
+          }
+      }
+
+      DashBoard();
+
+
+  </script>
+

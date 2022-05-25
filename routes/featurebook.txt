@@ -1,0 +1,13 @@
+            // $.ajax({
+            //     url: "{{ route('featured-books') }}",
+            //     method: 'POST',
+            //     data:{hot_books:hot_books, hot_book_id:hot_book_id, _token: _token},
+            //         success: function(data){
+            //             Swal.fire({
+            //             title: title,
+            //             text: text,
+            //             icon: icon,
+            //             confirmButtonText: confirmButtonText
+            //             });
+            //         }
+            //     });

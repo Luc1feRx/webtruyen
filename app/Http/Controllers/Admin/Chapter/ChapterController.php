@@ -11,18 +11,23 @@ use Illuminate\Http\Request;
 
 class ChapterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('api');
+    }
     public function index()
     {
+        $chapter = Chapter::with('books')->orderBy('id', 'desc')->simplePaginate(15);
         return view('admin.chapter.index', [
             'title' => 'Danh Sách Chapter',
             'name' => session()->get('email'),
-            'chapters' => Chapter::with('books')->orderBy('id', 'desc')->simplePaginate(15)
+            'chapters' => $chapter
         ]);
+
+        // return response()->json([
+        //     'chapters' => $chapter,
+        //     'status' => 200
+        // ]);
     }
 
     /**
@@ -48,18 +53,23 @@ class ChapterController extends Controller
     public function store(ChapterRequest $request)
     {
         try{
-            $request->except('_token');
-            Chapter::create([
-                'name' => $request->input('name'),
-                'slug' => $request->input('slug'),
-                'description' => $request->input('description'),
-                'content' => $request->input('content'),
-                'book_id' => $request->input('book_id'),
-                'active' => $request->input('active'),
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
-            ]);
-            session()->flash('success', 'Thêm Chapter Thành Công');
-            return redirect()->route('chapters.create');
+            $chapter = new Chapter();
+            $chapter->name = $request->name;
+            $chapter->slug = $request->slug;
+            $chapter->description = $request->description;
+            $chapter->content = $request->content;
+            $chapter->book_id = $request->book_id;
+            $chapter->active = $request->active;
+            $chapter->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+            if($chapter->save()){
+                return response()->json([
+                    'chapters' => $chapter,
+                    'message' => 'Chapter add successfully',
+                    'status' => 200
+                ]);
+            }
+            // session()->flash('success', 'Thêm Chapter Thành Công');
+            // return redirect()->route('chapters.create');
         }catch(\Exception $e){
             session()->flash('error', $e);
         }
@@ -99,21 +109,26 @@ class ChapterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ChapterRequest $request, $id)
+    public function update(ChapterRequest $request, Chapter $chapter)
     {
         try{
             $request->except('_token');
-            $chapter = Chapter::findOrFail($id);
-            $chapter->name = $request->input('name');
-            $chapter->slug = $request->input('slug');
-            $chapter->description = $request->input('description');
-            $chapter->content = $request ->input('content');
-            $chapter->book_id = $request ->input('book_id');
-            $chapter->active = $request->input('active');
+            $chapter->name = $request->name;
+            $chapter->slug = $request->slug;
+            $chapter->description = $request->description;
+            $chapter->content = $request ->content;
+            $chapter->book_id = $request ->book_id;
+            $chapter->active = $request->active;
             $chapter->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
-            $chapter->save();
-            session()->flash('success', 'Cập Nhật Chapter Thành Công');
-            return redirect()->route('chapters.index');
+            if($chapter->save()){
+                return response()->json([
+                    'chapters' => $chapter,
+                    'message' => 'Chapter update successfully',
+                    'status' => 200
+                ]);
+            }
+            // session()->flash('success', 'Cập Nhật Chapter Thành Công');
+            // return redirect()->route('chapters.index');
         }catch(\Exception $e){
             session()->flash('error', $e);
         }
@@ -125,8 +140,15 @@ class ChapterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $chapter = Chapter::where('id', $request->id)->first();
+        if($chapter){
+            $chapter->delete();
+            return response()->json([
+                'success' => 'Delete Success',
+                'status' => 200
+            ]);
+        }
     }
 }

@@ -59,11 +59,10 @@
 
           <div class="form-group">
             <label for="exampleInputFile">Hình Ảnh</label>
-            <input type="file" class="form-control" id="upload">
+            <input type="file" class="form-control" name="new_thumb" value="{{$books->thumb}}" id="upload">
             <div id="image_show">
-                <img src="{{$books->thumb}}" alt="" style="width: 140px; height: 200px">
+                <img src="{{ asset($books->thumb) }}" alt="" style="width: 140px; height: 200px">
             </div>
-            <input type="hidden" class="form-control" name="thumb" value="{{$books->thumb}}" id="thumb">
         </div>
 
         <div class="form-group">

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
-class LoginController extends Controller
+class LoginController extends Controller 
 {
     public function index()
     {
@@ -72,7 +72,7 @@ class LoginController extends Controller
     {
         return view('admin.dashboard', [
             'title' => 'Dashboard',
-            'name' => session()->get('email')
+            // 'name' => session()->get('email')
         ]);
     }
 

@@ -24,14 +24,16 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|max:255',
-            'description' => 'required|max:255'
+            'name'=> 'required|max:255|min:3',
+            'slug' => 'required|max:255|min:3',
+            'description' => 'required|max:255|min:3'
         ];
     }
 
     public function messages(){
         return [
             'name.required' => 'Không Được để Trống Tên Danh Mục',
+            'slug.required' => 'Không Được để Trống Slug Danh Mục',
             'description.required' => 'Không Được để Trống Mô Tả Danh Mục'
         ];
     }
