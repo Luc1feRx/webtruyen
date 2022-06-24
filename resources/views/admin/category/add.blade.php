@@ -72,10 +72,10 @@
             let active = $('.active').val();
 
             let FormData = { //tạo 1 biến formData chuỗi json
-                n: name,
-                s: slug,
-                d: description,
-                a: active
+                name: name,
+                slug: slug,
+                description: description,
+                active: active
             }
 
             axios.post("{{ route('category.store') }}", FormData) //thêm 1 danh mục sử dụng axio giao tiếp với api
@@ -92,9 +92,9 @@
                         showConfirmButton: false,
                         timer: 1500
                     }); //thông báo
-                    setInterval(function () {
-                        window.location.href = `http://127.0.0.1:8000/api/categories`;
-                    }, 1500); //sau khi thêm xong sau 1,5 giây sẽ tự động quay lại danh sách danh mục
+                    // setInterval(function () {
+                    //     window.location.href = `http://127.0.0.1:8000/api/categories`;
+                    // }, 1500); //sau khi thêm xong sau 1,5 giây sẽ tự động quay lại danh sách danh mục
                 })
                 .catch(function (error) {
                     if(error.response.data.errors.name){

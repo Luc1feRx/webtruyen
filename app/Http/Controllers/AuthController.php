@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -55,15 +57,19 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+        $user = DB::table('users')->where('email', $request->email)->first();
+        $cookie = cookie('name' , $user->name);
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Invalid email or password'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return response()->json([
+            'token'=>$this->respondWithToken($token),
+        ])->cookie($cookie);
     }
 
     /**

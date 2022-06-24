@@ -122,8 +122,8 @@
             }
             axios.post('/api/auth/login', formData, )
                 .then(function (response) {
-                    console.log(response.data);
-                    const access_token = response.data.access_token;
+                    console.log(response.data.token.original);
+                    const access_token = response.data.token.original.access_token;
                     localStorage.setItem('access_token', access_token);
                     window.location = "{{route('dashboard')}}";
                 })

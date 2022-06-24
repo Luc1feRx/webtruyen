@@ -7,7 +7,7 @@
 @section('content')
 <div class="card card-primary">
     <!-- form start -->
-    <form action="" enctype="multipart/form-data" method="post" id="addNewBook">
+    <form action="{{route('book.store')}}" enctype="multipart/form-data" method="post" id="addNewBook">
         {{ csrf_field() }}
       <div class="card-body">
 
@@ -104,54 +104,50 @@
     </script>
 
     <script type="text/javascript">
-        $('body').on('submit', '#addNewBook', function (e) {
-           e.preventDefault();
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-           let name = $('.name').val();
-           let author = $('.author').val();
-           let summary = $('.summary').val();
-           let description = $('.description').val();
-           let slug = $('.slug').val();
-           let hot_book = $('.hot_book').val();
-           let active = $('.active').val();
-           let categories = [];
-            $(':checkbox:checked').each(function(i){
-                categories[i] = $(this).val();
-            });
-            categories.pop();
-            categories.pop();
-            // let thumb = "";
-            // let file = $('.thumb')[0].files[0];
-            // if (file){
-            //     // thumb = file.name;
-            //     console.log(file);
-            // }
+        {{--$('body').on('submit', '#addNewBook', function (e) {--}}
+        {{--   e.preventDefault();--}}
+        {{--    const config = {--}}
+        {{--        headers: {--}}
+        {{--            'content-type': 'multipart/form-data'--}}
+        {{--        }--}}
+        {{--    }--}}
+        {{--   let name = $('.name').val();--}}
+        {{--   let author = $('.author').val();--}}
+        {{--   let summary = $('.summary').val();--}}
+        {{--   let description = $('.description').val();--}}
+        {{--   let slug = $('.slug').val();--}}
+        {{--   let hot_book = $('.hot_book').val();--}}
+        {{--   let active = $('.active').val();--}}
+        {{--   let categories = [];--}}
+        {{--    $(':checkbox:checked').each(function(i){--}}
+        {{--        categories[i] = $(this).val();--}}
+        {{--    });--}}
+        {{--    categories.pop();--}}
+        {{--    categories.pop();--}}
+        {{--    let thumb = "";--}}
+        {{--    let file = $('.thumb')[0].files[0];--}}
+        {{--    if (file){--}}
+        {{--        thumb = file.name;--}}
+        {{--    }--}}
 
-            let data = new FormData();
-            data.append('thumb', document.getElementById('thumb').files[0]);
-            console.log();
 
-            {{--let FormData = {--}}
-            {{--    name: name,--}}
-            {{--    author: author,--}}
-            {{--    summary: summary,--}}
-            {{--    categories: categories,--}}
-            {{--    thumb: thumb,--}}
-            {{--    hot_book: hot_book,--}}
-            {{--    slug: slug,--}}
-            {{--    description: description,--}}
-            {{--    active: active--}}
-            {{--}--}}
+        {{--    let FormData = {--}}
+        {{--        name: name,--}}
+        {{--        author: author,--}}
+        {{--        summary: summary,--}}
+        {{--        categories: categories,--}}
+        {{--        thumb: thumb,--}}
+        {{--        hot_book: hot_book,--}}
+        {{--        slug: slug,--}}
+        {{--        description: description,--}}
+        {{--        active: active--}}
+        {{--    }--}}
 
-            {{--axios.post("{{ route('book.store') }}", FormData, config).then(function (response) {--}}
-            {{--    console.log(response.data);--}}
-            {{--}).catch(function (error) {--}}
+        {{--    axios.post("{{ route('book.store') }}", FormData).then(function (response) {--}}
+        {{--        console.log(response.data);--}}
+        {{--    }).catch(function (error) {--}}
 
-            {{--});--}}
-        });
+        {{--    });--}}
+        {{--});--}}
     </script>
 @endsection

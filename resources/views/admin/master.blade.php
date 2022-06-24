@@ -39,7 +39,7 @@
     cursor: pointer;
     transition: all .5s ease;
     padding: 0 2px;
-    border-radius: 1px    
+    border-radius: 1px
 }
 .dialog-ovelay .dialog header .fa-close:hover {
     color: #b9b9b9
@@ -93,13 +93,14 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      {{-- <li class="nav-item">
-        <form action="{{ route('log-out') }}" method="POST">
-            {{ csrf_field() }}
-            <button class="nav-link" href="#" role="button">Log Out</button>
-        </form>
-      </li> --}}
     </ul>
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <form action="" id="btnLogOut">
+                  <button class="nav-link btn btn-primary text-light" href="#" role="button">Log Out</button>
+              </form>
+          </li>
+      </ul>
 
   </nav>
   <!-- /.navbar -->

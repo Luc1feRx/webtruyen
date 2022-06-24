@@ -55,6 +55,8 @@ Route::group(['middleware' => 'api'], function (){
         Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
         Route::get('/get-all-categories', [CategoryController::class, 'GetAllCategory'])->name('category.getAll');
+
+
     });
 
     Route::prefix('books')->group(function () {
@@ -67,6 +69,8 @@ Route::group(['middleware' => 'api'], function (){
         Route::put('/update/{book}', [BookController::class, 'update'])->name('book.update');
 
         Route::delete('/delete/{book}', [BookController::class, 'destroy'])->name('book.destroy');
+
+        Route::post('/store-photo', [BookController::class, 'storeImage'])->name('image.store');
     });
 
 

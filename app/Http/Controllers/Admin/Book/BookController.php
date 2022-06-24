@@ -30,6 +30,10 @@ class BookController extends Controller
         ]);
     }
 
+    public function storeImage(Request $request){
+        dd($request->thumb);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -47,33 +51,30 @@ class BookController extends Controller
     public function store(Request $request)
     {
         try{
-//            $book = new Book();
-//            $book->name = $request->name;
-//            $book->slug = $request->slug;
-//            $book->summary = $request->summary;
-//            $book->author = $request->author;
-//            $book->description = $request->description;
+            $book = new Book();
+            $book->name = $request->name;
+            $book->slug = $request->slug;
+            $book->summary = $request->summary;
+            $book->author = $request->author;
+            $book->description = $request->description;
             if($request->thumb){
                 $image = $request->thumb;
-                $extension = $image->getClientOriginalExtension();
-//                dd($extension);
-//                $file = Storage::disk('public')->put('images', $request->thumb);
-//                $book->thumb = 'storage/' . $file;
+                $file = Storage::disk('public')->put('images', $image);
+//                $file = Storage::put('images', $image, 'public');
+                $book->thumb = 'storage/' . $file;
             }
-//            $book->hot_book = $request->hot_book;
-//            $book->active = $request->active;
-//            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-//            foreach($request->categories as $category){
-//                $cate = $category[0];
-//            }
-//            $book->category_id = $cate;
-//
-//            if($book->save()){
-//                $book->book_in_multiple_cate()->attach($request->categories);
-//                return response()->json([
-//                    $book, 200, 'message' => 'Add Success'
-//                ]);
-//            }
+            $book->hot_book = $request->hot_book;
+            $book->active = $request->active;
+            $book->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+            foreach($request->categories as $category){
+                $cate = $category[0];
+            }
+            $book->category_id = $cate;
+
+            if($book->save()){
+                $book->book_in_multiple_cate()->attach($request->categories);
+                return redirect()->route('book.category');
+            }
         }catch(\Exception $e){
             dd($e);
         }

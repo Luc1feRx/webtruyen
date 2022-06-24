@@ -181,6 +181,14 @@ $(function () {
 
       DashBoard();
 
+  </script>
 
+{{--  logout--}}
+  <script type="text/javascript">
+    $('body').on('submit', '#btnLogOut', function (e) {
+        e.preventDefault();
+        localStorage.removeItem('access_token');
+        window.location = "{{route('get-login')}}";
+    })
   </script>
 

@@ -42,10 +42,10 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request) // them danh muc
     {
         $category = new Category();
-        $category->name = $request->n;
-        $category->slug =  $request->s;
-        $category->description = $request->d;
-        $category->active = $request->a;
+        $category->name = $request->name;
+        $category->slug =  $request->slug;
+        $category->description = $request->description;
+        $category->active = $request->active;
         if($category->save()){
             return response()->json([
                'message' => 'Add Success',
