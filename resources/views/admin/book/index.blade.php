@@ -2,6 +2,7 @@
 
 
 @section('content')
+@include('admin.error.error')
         <div class="card-body">
             <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
             <thead>
@@ -50,7 +51,7 @@
                         {{-- <form action="{{ route('book.destroy', ['book'=>$item->id]) }}" method="post">
                             @method('DELETE')
                             {{ csrf_field() }}
-                            <button onclick="Delete({{$item->id}})" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                            <button onclick="DeleteRow({{$item->id}})" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                         </form> --}}
                     </td>
                 </tr>

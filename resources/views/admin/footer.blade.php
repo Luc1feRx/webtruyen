@@ -121,30 +121,30 @@ $(function () {
 <script type="text/javascript">
    function DeleteRow(id, url) {
        console.log(id);
-    // var result = Swal.fire({
-    //                 title: 'Thông Báo',
-    //                 text: "Bạn Chắc Chứ?",
-    //                 icon: 'warning',
-    //                 showCancelButton: true,
-    //                 confirmButtonColor: '#3085d6',
-    //                 cancelButtonColor: '#d33',
-    //                 confirmButtonText: 'Xóa'
-    //                 }).then((result) => {
-    //                     if (result.isConfirmed) {
-    //                           $.ajax({
-    //                             type: 'DELETE',
-    //                             datatype: 'JSON',
-    //                             data: {id},
-    //                             url: url,
-    //                             success: function(result){
-    //                               location.reload();
-    //                               console.log(url);
-    //                             }
-    //                         });
-    //                       }
-    //                     }
-    //                 );
-                }
+      var result = Swal.fire({
+                        title: 'Thông Báo',
+                        text: "Bạn Chắc Chứ?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Xóa'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                  $.ajax({
+                                    type: 'DELETE',
+                                    datatype: 'JSON',
+                                    data: {id},
+                                    url: url,
+                                    success: function(result){
+                                      location.reload();
+                                      console.log(url);
+                                    }
+                                });
+                              }
+                            }
+                        );
+                    }
 
 </script>
 

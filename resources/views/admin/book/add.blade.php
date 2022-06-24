@@ -6,6 +6,7 @@
 
 @section('content')
 <div class="card card-primary">
+
     <!-- form start -->
     <form action="{{route('book.store')}}" enctype="multipart/form-data" method="post" id="addNewBook">
         {{ csrf_field() }}

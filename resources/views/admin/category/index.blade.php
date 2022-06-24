@@ -94,7 +94,7 @@
                                         timer: 1500
                                     });
                                     setInterval(function () {
-                                        window.location.href = `http://127.0.0.1:8000/api/categories`;
+                                        window.location.href = `http://127.0.0.1:8000/categories`;
                                     }, 1500);
                                 })
                                 .catch(function (error) {

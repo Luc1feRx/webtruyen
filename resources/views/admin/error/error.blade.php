@@ -1,4 +1,4 @@
-{{-- @if ($errors->any())
+@if ($errors->any())
     <div class="card-title alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -28,4 +28,4 @@
         {{session()->put('error', null)}}
     </div>
 @endif
- --}}
+

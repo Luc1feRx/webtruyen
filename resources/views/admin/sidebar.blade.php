@@ -14,7 +14,7 @@
           <img src="{{ asset('template/admin/dist/img/ava1.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{\Illuminate\Support\Facades\Cookie::get('name')}}</a>
+          <a href="#" class="d-block">Axwell</a>
         </div>
       </div>
 

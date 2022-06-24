@@ -73,7 +73,8 @@ class BookController extends Controller
 
             if($book->save()){
                 $book->book_in_multiple_cate()->attach($request->categories);
-                return redirect()->route('book.category');
+                session()->flash('success', 'Thêm Truyện Thành Công');
+                return redirect()->route('book.index');
             }
         }catch(\Exception $e){
             dd($e);
@@ -141,9 +142,7 @@ class BookController extends Controller
             $book->category_id = $cate;
             $book->save();
             $book->book_in_multiple_cate()->sync($data['categories']);
-            return response()->json([
-                $book, 200, 'message' => 'Update Success'
-            ]);
+            return redirect()->route('book.index');
             // session()->flash('success', 'Cập Nhật Truyện Thành Công');
             // return redirect()->route('book.index');
         }catch(\Exception $e){

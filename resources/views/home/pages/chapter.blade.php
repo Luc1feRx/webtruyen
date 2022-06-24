@@ -24,7 +24,7 @@
                     <p class="text-lg-start fs-4">Chọn Chương</p>
                     <select class="form-select select-chapter" aria-label="Default select example">
                         @foreach ($getAllChapters as $chap)
-                        <option value="{{ route('chapter', ['slug'=>$chap->slug]) }}">{{$chap->name}}</option>
+                          <option value="{{ route('chapter', ['slug'=>$chap->slug]) }}">{{$chap->name}}</option>
                         @endforeach
                       </select>
                 </div>
