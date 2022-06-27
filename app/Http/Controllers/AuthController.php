@@ -38,6 +38,11 @@ class AuthController extends Controller
                 'email' => request()->email,
                 'password' => bcrypt(request()->password),
             ]);
+
+
+
+            $user = User::where('email', '=', request()->email)->first();
+            $user->assignRole(request()->role);
         } catch (BindingResolutionException $e) {
         }
 
@@ -60,16 +65,21 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $user = DB::table('users')->where('email', $request->email)->first();
-        $cookie = cookie('name' , $user->name);
+        $cookie_id = cookie('user_id', $user->id);
+        $cookie_name = cookie('user_name', $user->name);
+        // $session_id = $request->session()->put('id', $user->id);
+        
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (! $token = Auth::attempt($credentials)) {
             return response()->json(['error' => 'Invalid email or password'], 401);
         }
 
-        return response()->json([
-            'token'=>$this->respondWithToken($token),
-        ])->cookie($cookie);
+        if (Auth::attempt($credentials)) {
+            return response()->json([
+                'token'=>$this->respondWithToken($token),
+            ])->cookie($cookie_id)->cookie($cookie_name);
+        }
     }
 
     /**

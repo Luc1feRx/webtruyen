@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -68,11 +69,14 @@ class LoginController extends Controller
         }
     }
 
-    public function show()
+    public function show(Request $request)
     {
+        $id = $request->cookie('user_id');
+        $user = User::find($id);
+        $user->getPermissionsViaRoles();
         return view('admin.dashboard', [
             'title' => 'Dashboard',
-            // 'name' => session()->get('email')
+            'user' => $user
         ]);
     }
 

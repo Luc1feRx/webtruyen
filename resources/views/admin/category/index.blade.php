@@ -83,23 +83,35 @@
                         $("#tbody").on('click', "#btnDelete", function() {
                             let id = $(this).data('id'); //get id
                             let url = window.location.origin + `/api/categories/delete/${id}`;
-                            axios.delete(url)
+                            Swal.fire({
+                                title: 'Thông Báo',
+                                text: "Bạn Chắc Chứ?",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Xóa'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        axios.delete(url)
                                 .then(function (response) {
-                                    console.log(response);
-                                    Swal.fire({
-                                        position: 'top-end',
-                                        icon: 'success',
-                                        title: response.data.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                    setInterval(function () {
-                                        window.location.href = `http://127.0.0.1:8000/categories`;
-                                    }, 1500);
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
+                                            Swal.fire({
+                                                position: 'top-end',
+                                                icon: 'success',
+                                                title: response.data.message,
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                            setInterval(function () {
+                                                window.location.href = `http://127.0.0.1:8000/categories`;
+                                            }, 1500);
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error);
+                                        });
+                                        }
+                                    }
+                                );
                         });
                     });
                 </script>

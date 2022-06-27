@@ -14,7 +14,7 @@
           <img src="{{ asset('template/admin/dist/img/ava1.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Axwell</a>
+          <a href="#" class="d-block">{{$name}}</a>
         </div>
       </div>
 
@@ -32,12 +32,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('category.create') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Danh Mục</p>
-                </a>
-              </li>
+                <li class="nav-item">
+                  <a href="{{ route('category.create') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Thêm Danh Mục</p>
+                  </a>
+                </li>
               <li class="nav-item">
                 <a href="{{ route('category.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -142,6 +142,36 @@
               </li>
             </ul>
           </li>
+
+          @if($user->can('add user'))
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                User
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('user.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm User</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('user.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh Sách User</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          @endif
+
+
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

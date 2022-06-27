@@ -42,7 +42,7 @@ Route::group([
 ], function ($router) {
     Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login-admin');
     Route::post('/log-out', [\App\Http\Controllers\AuthController::class, 'logout'])->name('log-out');
-    Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+    Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
 });
 
 // Route::apiResource('/category', CategoryController::class);

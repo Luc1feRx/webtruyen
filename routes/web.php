@@ -3,9 +3,13 @@
 use App\Http\Controllers\Admin\Book\BookController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Chapter\ChapterController;
+use App\Http\Controllers\Admin\Gallery\GalleryController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\Slider\SliderController;
+use App\Http\Controllers\Admin\Usercontroller;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Upload\UploadController;
+use App\Http\Controllers\UserController as ControllersUserController;
 use FontLib\Table\Type\name;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
@@ -81,7 +85,6 @@ Route::group(['middleware' => 'api'], function (){
         Route::get('/', [CategoryController::class, 'index'])->name('category.index');
         Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
         Route::get('/get-all-categories', [CategoryController::class, 'GetAllCategory'])->name('category.getAll');
-
     });
 
     Route::prefix('books')->group(function () {
@@ -120,4 +123,12 @@ Route::group(['middleware' => 'api'], function (){
         Route::get('/edit/{gallery}', [GalleryController::class, 'edit'])->name('galleries.edit');
         Route::put('/update/{gallery}', [GalleryController::class, 'update'])->name('galleries.update');
     });
+
+    Route::resource('user', UserController::class);
+
+    Route::get('/ApprovePermission/{id}', [UserController::class, 'ApprovePermission'])->name('ApprovePermission');
+    Route::get('/ApproveRole/{id}', [UserController::class, 'ApproveRole'])->name('ApproveRole');
+    Route::post('/insertRole/{id}', [UserController::class, 'insertRole'])->name('insertRole');
+    Route::post('/insertPermission/{id}', [UserController::class, 'insertPermission'])->name('insertPermission');
 });
+
